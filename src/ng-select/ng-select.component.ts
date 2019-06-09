@@ -1,3 +1,4 @@
+import { OptionUtilService } from './option-util.service';
 import {
     Component,
     OnDestroy,
@@ -115,11 +116,14 @@ export class NgSelectComponent implements OnDestroy, OnChanges, AfterViewInit, C
     @Input() @HostBinding('class.ng-select-searchable') searchable = true;
     @Input() @HostBinding('class.ng-select-clearable') clearable = true;
     @Input() @HostBinding('class.ng-select-opened') isOpen = false;
+    uniqCols: string[];
 
     @Input()
     get items() { return this._items };
     set items(value: any[]) {
         this._itemsAreUsed = true;
+        this.uniqCols = this.optionUtilService.getUniqColumns(value);
+        console.log('items=', this.uniqCols);
         this._items = value;
     };
 
@@ -205,7 +209,8 @@ export class NgSelectComponent implements OnDestroy, OnChanges, AfterViewInit, C
         @Inject(SELECTION_MODEL_FACTORY) newSelectionModel: SelectionModelFactory,
         _elementRef: ElementRef,
         private _cd: ChangeDetectorRef,
-        private _console: ConsoleService
+        private _console: ConsoleService,
+        private optionUtilService: OptionUtilService
     ) {
         this._mergeGlobalConfig(config);
         this.itemsList = new ItemsList(this, newSelectionModel());
