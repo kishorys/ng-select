@@ -1,4 +1,3 @@
-import { OptionUtilService } from './option-util.service';
 import {
     Component,
     OnDestroy,
@@ -45,7 +44,7 @@ import {
 import { ConsoleService } from './console.service';
 import { isDefined, isFunction, isPromise, isObject } from './value-utils';
 import { ItemsList } from './items-list';
-import { NgOption, KeyCode } from './ng-select.types';
+import { NgOption, KeyCode, OptionParam } from './ng-select.types';
 import { newId } from './id';
 import { NgDropdownPanelComponent } from './ng-dropdown-panel.component';
 import { NgOptionComponent } from './ng-option.component';
@@ -122,8 +121,8 @@ export class NgSelectComponent implements OnDestroy, OnChanges, AfterViewInit, C
     get items() { return this._items };
     set items(value: any[]) {
         this._itemsAreUsed = true;
-        this.uniqCols = this.optionUtilService.getUniqColumns(value);
-        console.log('items=', this.uniqCols);
+        const optionParams: string[] = value.map(obj => obj.colIndex);
+        this.uniqCols = [...new Set(optionParams)];
         this._items = value;
     };
 
@@ -209,8 +208,7 @@ export class NgSelectComponent implements OnDestroy, OnChanges, AfterViewInit, C
         @Inject(SELECTION_MODEL_FACTORY) newSelectionModel: SelectionModelFactory,
         _elementRef: ElementRef,
         private _cd: ChangeDetectorRef,
-        private _console: ConsoleService,
-        private optionUtilService: OptionUtilService
+        private _console: ConsoleService
     ) {
         this._mergeGlobalConfig(config);
         this.itemsList = new ItemsList(this, newSelectionModel());

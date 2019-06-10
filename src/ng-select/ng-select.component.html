@@ -82,10 +82,10 @@
     [id]="dropdownId">
 
     <ng-container>
-        <div class="row">
-            <div *ngFor="let col of uniqCols" class="column">
+        <div class="opt-row">
+            <div *ngFor="let colIdx of uniqCols" class="opt-column">
                 <ng-container *ngFor="let item of viewPortItems; trackBy: trackByOption">
-                <div *ngIf="item.value.id.split(':')[0] === col"
+                <div *ngIf="item.value.colIndex === colIdx"
                         class="ng-option" [attr.role]="item.children ? 'group' : 'option'" (click)="toggleItem(item)" (mouseover)="onItemHover(item)"
                         [class.ng-option-disabled]="item.disabled"
                         [class.ng-option-selected]="item.selected"
@@ -97,7 +97,15 @@
                         [attr.id]="item?.htmlId">
 
                         <ng-template #defaultOptionTemplate>
-                            <span class="ng-option-label">{{item.label}}</span>
+                            <div class="ng-option-label">{{item.label}}</div>
+                            <ng-container *ngIf="item.value.customInputEnabled">
+                            <div class="ng-option-input">
+                                <label class="opt-input-label">
+                                    {{item.label}}
+                                </label>
+                                <input class="opt-input-text" type="text" id="{{item.value.colName}}">
+                            </div>
+                            </ng-container>
                         </ng-template>
                         <ng-template
                             [ngTemplateOutlet]="item.children ? (optgroupTemplate || defaultOptionTemplate) : (optionTemplate || defaultOptionTemplate)"

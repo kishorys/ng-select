@@ -20,3 +20,13 @@ export enum KeyCode {
     ArrowDown = 40,
     Backspace = 8
 }
+
+export interface OptionParam {
+    group: string;
+    colName: string;
+    colIndex: string;
+    id: string;
+    value: string;
+    customInputEnabled?: boolean;
+    customInput?: string;
+}
