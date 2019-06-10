@@ -84,8 +84,9 @@
     <ng-container>
         <div class="row">
             <div *ngFor="let col of uniqCols" class="column">
-                <div class="ng-option" [attr.role]="item.children ? 'group' : 'option'" (click)="toggleItem(item)" (mouseover)="onItemHover(item)"
-                        *ngFor="let item of viewPortItems; trackBy: trackByOption"
+                <ng-container *ngFor="let item of viewPortItems; trackBy: trackByOption">
+                <div *ngIf="item.value.id.split(':')[0] === col"
+                        class="ng-option" [attr.role]="item.children ? 'group' : 'option'" (click)="toggleItem(item)" (mouseover)="onItemHover(item)"
                         [class.ng-option-disabled]="item.disabled"
                         [class.ng-option-selected]="item.selected"
                         [class.ng-optgroup]="item.children"
@@ -98,12 +99,12 @@
                         <ng-template #defaultOptionTemplate>
                             <span class="ng-option-label">{{item.label}}</span>
                         </ng-template>
-
-                    <ng-template
-                        [ngTemplateOutlet]="item.children ? (optgroupTemplate || defaultOptionTemplate) : (optionTemplate || defaultOptionTemplate)"
-                        [ngTemplateOutletContext]="{ item: item.value, item$:item, index: item.index, searchTerm: filterValue }">
-                    </ng-template>
+                        <ng-template
+                            [ngTemplateOutlet]="item.children ? (optgroupTemplate || defaultOptionTemplate) : (optionTemplate || defaultOptionTemplate)"
+                            [ngTemplateOutletContext]="{ item: item.value, item$:item, index: item.index, searchTerm: filterValue }">
+                        </ng-template>
                 </div>
+                </ng-container>
             </div>
         </div>
 
