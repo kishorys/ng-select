@@ -1,7 +1,7 @@
 <div (mousedown)="handleMousedown($event)" [class.ng-has-value]="hasValue" class="ng-select-container">
     <div class="ng-value-container">
         <div class="ng-placeholder">{{placeholder}}</div>
-
+            
         <ng-container *ngIf="!multiLabelTemplate && selectedItems.length > 0">
             <div [class.ng-value-disabled]="item.disabled" class="ng-value" *ngFor="let item of selectedItems; trackBy: trackByOption">
                 <ng-template #defaultLabelTemplate>
@@ -98,20 +98,22 @@
 
                         <ng-template #defaultOptionTemplate>
                             <div class="ng-option-label">{{item.label}}</div>
-                            <ng-container *ngIf="item.value.customInputEnabled">
-                            <div class="ng-option-input">
-                                <label class="opt-input-label">
-                                    {{item.label}}
-                                </label>
-                                <input class="opt-input-text" type="text" id="{{item.value.colName}}">
-                            </div>
-                            </ng-container>
                         </ng-template>
                         <ng-template
                             [ngTemplateOutlet]="item.children ? (optgroupTemplate || defaultOptionTemplate) : (optionTemplate || defaultOptionTemplate)"
                             [ngTemplateOutletContext]="{ item: item.value, item$:item, index: item.index, searchTerm: filterValue }">
                         </ng-template>
                 </div>
+                <ng-container *ngIf="item.value.colIndex === colIdx && item.value.customInputEnabled">
+                    <div class="ng-option-input">
+                        <label class="opt-input-label">
+                            {{item.label}}
+                        </label>
+                        <div class="opt-input-text-wrapper">
+                            <input class="opt-input-text" type="text" id="{{item.value.colName}}" value="{{item.value.customInput}}">
+                        </div>
+                    </div>
+                </ng-container>
                 </ng-container>
             </div>
         </div>
